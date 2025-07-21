@@ -1,0 +1,67 @@
+[versions]
+ignite-client = "2.17.0"
+grpc-protobuf = "1.69.1"
+jox = "0.4.0"
+quarkus = "3.20.0"
+aws-java-sdk-s3 = "2.30.36"
+tus = "0.5.1"
+cassandra = "1.2.0"
+lib-phone-number = "9.0.4"
+commons-lang3 = "3.17.0"
+commons-text = "1.13.0"
+commons-codec = "1.18.0"
+tomcat-api = "6.0.53"
+kafka-client = "3.9.0"
+
+test-containers-cassandra = "1.21.0"
+junit-jupiter = "5.10.5"
+junit-bom = "5.12.0"
+awaitility = "4.3.0"
+
+protobuf = "0.9.5"
+jandex = "1.90"
+lombok = "8.12.2"
+
+[libraries]
+ignite-client = { module = "org.apache.ignite:ignite-clients", version.ref = "ignite-client" }
+grpc-protobuf = { module = "io.grpc:grpc-protobuf", version.ref = "grpc-protobuf" }
+jox-channels = { module = "com.softwaremill.jox:channels", version.ref = "jox" }
+jox-structured = { module = "com.softwaremill.jox:structured", version.ref = "jox" }
+kafka-client = { module = "org.apache.kafka:kafka-clients", version.ref = "kafka-client" }
+quarkus-kafka = { module = "io.quarkus:quarkus-messaging-kafka", version.ref = "quarkus" }
+quarkus-rest = { module = "io.quarkus:quarkus-rest-client", version.ref = "quarkus" }
+quarkus-kubernetes = { module = "io.quarkus:quarkus-kubernetes", version.ref = "quarkus" }
+quarkus-smallrye-health = { module = "io.quarkus:quarkus-smallrye-health", version.ref = "quarkus" }
+quarkus-smallrye-graphql = { module = "io.quarkus:quarkus-smallrye-graphql", version.ref = "quarkus" }
+quarkus-smallrye-graphql-client = { module = "io.quarkus:quarkus-smallrye-graphql-client", version.ref = "quarkus" }
+
+aws-java-sdk-s3 = { module = "software.amazon.awssdk:s3", version.ref = "aws-java-sdk-s3" }
+cassandra-quarkus-client = { module = "com.datastax.oss.quarkus:cassandra-quarkus-client", version.ref = "cassandra" }
+cassandra-quarkus-mapper = { module = "com.datastax.oss.quarkus:cassandra-quarkus-mapper-processor", version.ref = "cassandra" }
+
+tomcat-api = { module = "org.apache.tomcat:annotations-api", version.ref = "tomcat-api" }
+lib-phone-number = { module = "com.googlecode.libphonenumber:libphonenumber", version.ref = "lib-phone-number" }
+commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
+commons-text = { module = "org.apache.commons:commons-text", version.ref = "commons-text" }
+commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
+
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit-bom" }
+quarkus-junit = { module = "io.quarkus:quarkus-junit5", version.ref = "quarkus" }
+quarkus-junit-mockito = { module = "io.quarkus:quarkus-junit5-mockito", version.ref = "quarkus" }
+rest-assured = { module = "io.rest-assured:rest-assured" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
+tus-client = { module = "io.tus.java.client:tus-java-client", version.ref = "tus" }
+test-containers-cassandra = { module = "org.testcontainers:cassandra", version.ref = "test-containers-cassandra" }
+awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility" }
+
+quarkus-smallrye-jwt = {module = "io.quarkus:quarkus-smallrye-jwt"}
+
+[bundles]
+jox = ["jox-channels", "jox-structured"]
+test = ["quarkus-junit", "quarkus-junit-mockito", "rest-assured", "junit-jupiter"]
+
+[plugins]
+protobuf = { id = "com.google.protobuf", version.ref = "protobuf" }
+jandex = { id = "com.github.vlsi.jandex", version.ref = "jandex" }
+quarkus = { id = "io.quarkus", version.ref = "quarkus" }
+lombok = { id = "io.freefair.lombok", version.ref = "lombok" }

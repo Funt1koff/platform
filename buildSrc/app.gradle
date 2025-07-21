@@ -1,0 +1,37 @@
+apply from: rootProject.file('buildSrc/shared.gradle')
+
+afterEvaluate {
+    var taskJandex = project.tasks.findByName("jandex")
+    var processJandexIndex = project.tasks.findByName("processJandexIndex")
+    var quarkusDependenciesBuild = project.tasks.findByName("quarkusDependenciesBuild")
+    var imageBuild = project.tasks.findByName("imageBuild")
+    var imagePush = project.tasks.findByName("imagePush")
+
+    if (taskJandex) {
+        if (quarkusDependenciesBuild) {
+            quarkusDependenciesBuild.dependsOn(taskJandex)
+        }
+
+        if (imageBuild) {
+            imageBuild.dependsOn(taskJandex)
+        }
+
+        if (imagePush) {
+            imagePush.dependsOn(taskJandex)
+        }
+    }
+
+    if (processJandexIndex) {
+        if (quarkusDependenciesBuild) {
+            quarkusDependenciesBuild.dependsOn(processJandexIndex)
+        }
+
+        if (imageBuild) {
+            imageBuild.dependsOn(processJandexIndex)
+        }
+
+        if (imagePush) {
+            imagePush.dependsOn(processJandexIndex)
+        }
+    }
+}

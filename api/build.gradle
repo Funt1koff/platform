@@ -1,0 +1,51 @@
+plugins {
+    id 'java-library'
+    alias(libs.plugins.jandex)
+    alias(libs.plugins.protobuf)
+    alias(libs.plugins.lombok)
+}
+
+apply from: rootProject.file('buildSrc/lib.gradle')
+
+dependencies {
+    implementation "io.grpc:grpc-protobuf"
+    implementation "io.grpc:grpc-services"
+    implementation "io.grpc:grpc-stub"
+    implementation libs.kafka.client
+    implementation libs.commons.text
+
+    compileOnly libs.tomcat.api
+
+    testImplementation libs.bundles.test
+    testImplementation(platform(libs.junit.bom))
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.25.6'
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.69.1'
+        }
+        quarkus {
+            artifact = "io.quarkus:quarkus-grpc-protoc-plugin:3.24.0.CR1:shaded@jar"
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+            quarkus {}
+        }
+    }
+}
+
+sourceSets {
+    main {
+        proto {
+            // In addition to the default 'src/main/proto'
+            srcDir 'src/main/api-schema/proto'
+            srcDir 'src/main/bot-api-schema/proto'
+        }
+    }
+}

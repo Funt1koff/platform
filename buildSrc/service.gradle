@@ -1,0 +1,32 @@
+apply from: rootProject.file('buildSrc/shared.gradle')
+apply from: rootProject.file('buildSrc/app.gradle')
+
+dependencies {
+    implementation 'io.quarkus:quarkus-container-image-docker'
+    implementation("io.quarkus:quarkus-opentelemetry")
+//    implementation libs.quarkus.kubernetes
+//    implementation "io.quarkus:quarkus-kubernetes-config"
+//    implementation 'io.quarkiverse.helm:quarkus-helm:1.2.7'
+    implementation libs.quarkus.smallrye.health
+}
+
+quarkus {
+    quarkus {
+        //docker
+        quarkusBuildProperties.put("quarkus.container-image.build", "true")
+        quarkusBuildProperties.put("quarkus.container-image.push", "false")
+        quarkusBuildProperties.put("quarkus.docker.dockerfile-jvm-path", "${project.rootDir}/buildSrc/docker/Dockerfile.jvm")
+        quarkusBuildProperties.put("quarkus.docker.dockerfile-native-path ", "${project.rootDir}/buildSrc/docker/Dockerfile.native")
+        quarkusBuildProperties.put("quarkus.container-image.registry", "uchat-dev.cr.cloud.ru")
+        quarkusBuildProperties.put("quarkus.container-image.group", "uchat")
+//         quarkusBuildProperties.put("quarkus.container-image.username", "username")
+//         quarkusBuildProperties.put("quarkus.container-image.password", "password")
+//         quarkusBuildProperties.put("quarkus.kubernetes.generate-image-pull-secret", "true")
+//
+//         //kubernetes
+//         quarkusBuildProperties.put("quarkus.kubernetes.deployment-kind", "stateful-set")
+//         quarkusBuildProperties.put("quarkus.kubernetes.replicas", "3")
+//         quarkusBuildProperties.put("quarkus.kubernetes.ingress.expose", "false")
+//         quarkusBuildProperties.put("quarkus.kubernetes.env.vars.IGNITE_DUMP_THREADS_ON_FAILURE", "false")
+    }
+}

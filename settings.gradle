@@ -4,8 +4,19 @@ pluginManagement {
         gradlePluginPortal()
         mavenLocal()
     }
-    plugins {
-        id "${quarkusPluginId}" version "${quarkusPluginVersion}"
+}
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+        mavenLocal()
+    }
+    versionCatalogs {
+        libs {
+            from(files("gradle/libs.version.toml"))
+        }
     }
 }
 rootProject.name='platform'
+include 'api'

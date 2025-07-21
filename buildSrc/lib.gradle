@@ -1,0 +1,15 @@
+apply from: rootProject.file('buildSrc/shared.gradle')
+
+afterEvaluate {
+    var taskJandex = project.tasks.findByName("jandex")
+    var quarkusDependenciesBuild = project.tasks.findByName("quarkusDependenciesBuild")
+    println "Task jandex: $taskJandex"
+    println "Task quarkusDependenciesBuild: $quarkusDependenciesBuild"
+    if (taskJandex && quarkusDependenciesBuild) {
+        quarkusDependenciesBuild.dependsOn(taskJandex)
+    } else {
+        println("One or both jandex related tasks are not present. Task quarkusDependenciesBuild.dependsOn(jandex).")
+        println("Task jandex: $taskJandex")
+        println("Task quarkusDependenciesBuild: $quarkusDependenciesBuild")
+    }
+}
