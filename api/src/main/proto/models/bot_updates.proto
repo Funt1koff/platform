@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.models;
+import "peers.proto";
+import "models/message.proto";
+
+message BotUpdate {
+  message UpdateNewMessage {
+    peers.Peer peer = 1;
+    Message message = 2;
+  }
+  message UpdateEditMessage {
+    peers.Peer peer = 1;
+    Message message = 2;
+  }
+
+  int32 id = 1;
+
+  oneof value {
+    UpdateNewMessage new_message = 2;
+    UpdateEditMessage edit_message = 3;
+  }
+}

@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.models;
+import "peers.proto";
+import "models/message.proto";
+option go_package = "api_private/models";
+
+message ChannelSeqUpdate {
+  message UpdateNewChannelMessage {
+    models.Message message = 1;
+  }
+  message UpdateEditChannelMessage {
+    models.Message message = 1;
+  }
+  message UpdateDeleteChannelMessage {
+    repeated uint32 msg_ids = 2;
+    optional uint32 new_top_msg_id = 3;
+  }
+
+  message UpdatePinnedChannelMessages {
+    repeated uint32 msg_ids = 2;
+  }
+
+  peers.ChannelPeer peer = 1;
+  uint64  channel_seq_update_number = 2;
+  oneof value {
+    UpdateNewChannelMessage new_channel_message = 3;
+    UpdateEditChannelMessage edit_channel_message = 4;
+    UpdateDeleteChannelMessage delete_channel_message = 5;
+    UpdatePinnedChannelMessages pinned_messages = 6;
+  }
+}

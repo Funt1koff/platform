@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.models;
+
+import "google/protobuf/wrappers.proto";
+
+message Bot {
+  int64 id = 1;
+  string name = 2;
+  google.protobuf.StringValue shortname = 3;
+  int64 owner_id = 4;
+  int64 created_at = 5;
+  google.protobuf.Int64Value deleted_at = 6;
+}

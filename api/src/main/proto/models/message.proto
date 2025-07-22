@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package  com.bonfire.internal.api.models;
+option go_package = "api_private/models";
+
+import "peers.proto";
+import "message_content.proto";
+import "google/protobuf/wrappers.proto";
+
+message Message {
+  int32 id = 1;
+  peers.Peer created_by = 2;
+  int64 created_at = 3; //UNIX
+  peers.Peer edited_by = 4;
+  google.protobuf.Int64Value edited_at = 5;
+  messages.MessageContent content = 4;
+  optional messages.MessageReference reference = 7;
+}

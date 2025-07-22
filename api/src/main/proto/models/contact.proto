@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.models;
+option go_package = "api_private/models";
+
+message Contact {
+  string name = 1;
+  int64 user_id = 2;
+}
+
+message AddressBookEntry {
+  string name = 1;
+  string phone_number = 2;
+  int64 edited_At = 3;
+}

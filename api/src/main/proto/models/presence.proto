@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.models;
+option go_package = "api_private/models";
+
+import "models/initiator.proto";
+import "peers.proto";
+import "presence.proto";
+
+message PresenceCommand {
+  message ReportLastSeen {
+    int64 seen_at = 1;
+    int64 expires_at = 2;
+  }
+  message ReportTypingStart {
+    peers.Peer peer = 1;
+    int64 seen_at = 2;
+    int64 expires_at = 3;
+    com.bonfire.presence.TypingType typing_type = 4;
+  }
+  message ReportTypingStop {
+    peers.Peer peer = 1;
+    com.bonfire.presence.TypingType typing_type = 2;
+  }
+  message SubscriptionsSummary {
+    int64 from = 1;
+  }
+
+  models.Initiator.User initiator = 1;
+
+  oneof command {
+    ReportLastSeen report_last_seen = 2;
+    ReportTypingStart report_typing_start = 3;
+    ReportTypingStop report_typing_stop = 4;
+    SubscriptionsSummary subscriptions_summary = 5;
+  }
+}
+
+message PresenceUpdate {
+  message UpdateLastSeen {
+    int64 last_seen_at = 1;
+    int64 expires_at = 2;
+  }
+  message UpdateTypingStart {
+    peers.Peer peer = 1;
+    int64 last_seen_at = 2;
+    int64 expires_at = 3;
+    com.bonfire.presence.TypingType typing_type = 4;
+  }
+  message UpdateTypingStop {
+    peers.Peer peer = 1;
+    com.bonfire.presence.TypingType typing_type = 2;
+  }
+
+  models.Initiator.User initiator = 1;
+  int64 receiver_user_id = 2;
+
+  oneof update {
+    UpdateLastSeen update_last_seen = 3;
+    UpdateTypingStart update_typing_start = 4;
+    UpdateTypingStop update_typing_stop = 5;
+  }
+}

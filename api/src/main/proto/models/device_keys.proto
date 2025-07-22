@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.models;
+option go_package = "api_private/models";
+
+message DeviceKeys {
+  string user_session_id = 1;
+  bytes tx = 2;
+  bytes rx = 3;
+  int64 start_nonce = 4;
+  bytes client_pk = 5;
+  int64 created_at = 6;
+}

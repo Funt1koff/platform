@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.models;
+import "google/protobuf/empty.proto";
+
+message ConversationPeer {
+  message User2User {
+    int64 lesser_uid = 1;
+    int64 greater_uid = 2;
+  }
+
+  message User2Bot {
+    int64 user_id = 1;
+    int64 bot_ud = 2;
+  }
+
+  message Bot2Bot {
+    int64 lesser_bot_id = 1;
+    int64 greater_bot_id = 2;
+  }
+
+  message Group {
+    int64 id = 1;
+  }
+
+  message Channel {
+    int64 id = 1;
+  }
+
+  message Thread {
+    ConversationPeer root = 1;
+    int32 root_msg_id = 2;
+  }
+
+  message Self {
+    int64 self_user_id = 1;
+  }
+
+  oneof body {
+    User2User user2user = 1;
+    Group group = 2;
+    Channel channel = 3;
+    User2Bot user2bot = 4;
+    Self self = 5;
+    Thread thread = 6;
+    Bot2Bot bot2bot = 7;
+  }
+}
