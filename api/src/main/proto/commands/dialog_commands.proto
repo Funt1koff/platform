@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.commands;
+import "peers.proto";
+import "models/message.proto";
+option go_package = "api_private/commands";
+
+// The request message containing the user's name.
+message DialogCommand {
+  message NewMessage {
+    peers.Peer peer = 1; //required
+    uint32 msg_id = 2;
+    models.Message message = 3; //required
+  }
+
+  message EditMessage {
+    peers.Peer peer = 1; //required
+    uint32 msg_id = 2;
+    models.Message message = 3; //required
+  }
+
+  message DeleteMessages {
+    peers.Peer peer = 1;
+    repeated uint32 msg_ids = 2;
+    optional uint32 new_top_msg_id = 3;
+    models.Message new_top_msg = 4; // should be provided if new_top_msg_id
+  }
+
+  message ReadInboxMessage {
+    peers.Peer peer = 1;
+    uint32 msg_id = 2;
+    optional uint32 require_channel_seq_number = 3; /// require channel seq
+  }
+
+  message ReadOutboxMessage {
+    peers.Peer peer = 1;
+    uint32 msg_id = 2;
+    optional uint32 require_channel_seq_number = 3; /// require channel seq
+  }
+
+  uint64 target_user_uid = 1;
+  oneof body {
+    NewMessage new_message = 2;
+    EditMessage edit_message = 3;
+    DeleteMessages delete_messages = 4;
+    ReadInboxMessage read_inbox_message = 5;
+    ReadOutboxMessage read_outbox_message = 6;
+  }
+
+}

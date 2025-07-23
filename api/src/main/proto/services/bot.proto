@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.services;
+
+import "models/initiator.proto";
+import "models/bot.proto";
+import "models/bot_updates.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+message CreateBotRequest {
+  models.Initiator.User initiator = 1;
+  int64 deduplication_id = 2;
+  string name = 3;
+  google.protobuf.StringValue shortname = 4;
+}
+
+message CreateBotResponse {
+  models.Bot bot = 1;
+}
+
+message DeleteBotRequest {
+  models.Initiator.User initiator = 1;
+  int64 bot_id = 2;
+}
+
+message CreateBotTokenRequest {
+  models.Initiator.User initiator = 1;
+  int64 bot_id = 2;
+}
+
+message CreateBotTokenResponse {
+  string token = 1;
+}
+
+message DeleteBotTokenRequest {
+  models.Initiator.User initiator = 1;
+  int64 bot_id = 2;
+  string token = 3;
+}
+
+message GetBotTokensRequest {
+  models.Initiator.User initiator = 1;
+  int64 bot_id = 2;
+}
+
+message GetBotTokensResponse {
+  repeated string tokens = 1;
+}
+
+message GetUpdatesRequest {
+  models.Initiator.Bot initiator = 1;
+  int32 from_id = 2;
+}
+
+message PublishUpdateRequest {
+  int64 receiver_bot_id = 1;
+  repeated models.BotUpdate updates = 2;
+}
+
+service Bots {
+  rpc Create (CreateBotRequest) returns (CreateBotResponse);
+  rpc Delete (DeleteBotRequest) returns (google.protobuf.Empty);
+
+  rpc CreateToken (CreateBotTokenRequest) returns (CreateBotTokenResponse);
+  rpc DeleteToken (DeleteBotTokenRequest) returns (google.protobuf.Empty);
+  rpc GetTokens (GetBotTokensRequest) returns (GetBotTokensResponse);
+}
+
+service BotUpdates {
+  rpc PublishUpdates (PublishUpdateRequest) returns (google.protobuf.Empty);
+  rpc GetUpdates (GetUpdatesRequest) returns (stream models.BotUpdate);
+}

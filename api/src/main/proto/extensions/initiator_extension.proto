@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.extensions;
+option go_package = "api_private/extensions";
+
+import "models/initiator.proto";
+
+message InitiatorExtension {
+  models.Initiator initiator = 1000;
+}

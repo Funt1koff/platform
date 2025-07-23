@@ -1,0 +1,116 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.services;
+option go_package = "api_private/services";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "models/profile_photo.proto";
+import "models/user.proto";
+import "files.proto";
+
+message BindUserByPhoneRequest {
+  string phone_number = 1;
+}
+
+message BindUserByPhoneResponse {
+  models.User user = 1;
+}
+
+message CreateUserRequest {
+  string deduplication_id = 1;
+  string name = 2;
+  string phone_number = 3;
+  google.protobuf.StringValue username = 4;
+}
+
+message CreateUserResponse {
+  models.User user = 1;
+}
+
+message UpdateUserProfileRequest {
+  int64 uid = 1;
+  string name = 2;
+}
+
+message UpdateUsernameRequest {
+  int64 uid = 1;
+  google.protobuf.StringValue username = 4;
+}
+
+message UpdateUserResponse {
+  models.User user = 1;
+}
+
+message GetUserRequest {
+  int64 uid = 1;
+}
+
+message GetUserResponse {
+  models.User user = 1;
+}
+
+message GetUsersBatchRequest {
+  repeated int64 uids = 1;
+}
+
+message GetUsersBatchResponse {
+  map<int64, models.User> users = 1;
+}
+
+message GetByUsernameRequest {
+  string username = 1;
+}
+
+message GetByUsernameResponse {
+  models.User user = 1;
+}
+
+message GetByPhoneRequest {
+  string phone_number = 1;
+}
+
+message GetByPhoneResponse {
+  models.User user = 1;
+}
+
+message ProfilePhotoPageable {
+  int64 edited_at = 1;
+  string profile_photo_id = 2;
+}
+
+message GetUserProfilePhotosRequest {
+  int64 user_id = 1;
+  int32 limit = 2;
+  ProfilePhotoPageable from = 3;
+}
+
+message GetUserProfilePhotosResponse {
+  repeated models.ProfilePhoto profile_photos = 1;
+  ProfilePhotoPageable next = 2;
+}
+
+message UpdateUserProfilePhotoRequest {
+  files.FileLocation photo = 1;
+  int64 user_id = 2;
+}
+
+message DeleteUserProfilePhotoRequest {
+  string profile_photo_id = 1;
+  int64 user_id = 2;
+}
+
+service Users {
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {}
+  rpc UpdateUserProfile(UpdateUserProfileRequest) returns (UpdateUserResponse) {}
+  rpc UpdateUsername(UpdateUsernameRequest) returns (UpdateUserResponse) {}
+  rpc GetUser(GetUserRequest) returns (GetUserResponse) {}
+  rpc GetUsersBatch(GetUsersBatchRequest) returns (GetUsersBatchResponse) {}
+  rpc GetByUsername(GetByUsernameRequest) returns (GetByUsernameResponse) {}
+  rpc BindUserByPhone(BindUserByPhoneRequest) returns (BindUserByPhoneResponse) {}
+  rpc GetByPhone(GetByPhoneRequest) returns (GetByPhoneResponse) {}
+  rpc GetUserProfilePhotos(GetUserProfilePhotosRequest) returns (GetUserProfilePhotosResponse){}
+  rpc UpdateUserProfilePhoto(UpdateUserProfilePhotoRequest) returns (google.protobuf.Empty){}
+  rpc DeleteUserProfilePhoto(DeleteUserProfilePhotoRequest) returns (google.protobuf.Empty){}
+}

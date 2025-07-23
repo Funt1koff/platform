@@ -1,0 +1,138 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.services;
+option go_package = "api_private/services";
+
+import "google/protobuf/wrappers.proto";
+
+import "models/initiator.proto";
+import "models/group.proto";
+import "common.proto";
+
+message GetGroupRequest{
+  models.Initiator initiator = 1;
+  int64 group_id = 2;
+}
+
+message GetGroupResponse{
+  models.GroupWithSelfMemberInfo group_with_self_info = 1;
+}
+
+message CreateGroupRequest {
+  models.Initiator initiator = 1;
+  int64 deduplication_id = 2;
+  string title = 3;
+  google.protobuf.StringValue description = 4;
+  repeated common.Member invited = 5;
+}
+
+message CreateGroupResponse {
+  int64 group_id = 1;
+  models.GroupWithSelfMemberInfo group_with_self_info = 2;
+}
+
+message InviteMembersRequest {
+  models.Initiator initiator = 1;
+  int64 group_id = 2;
+  repeated common.Member invited = 3;
+}
+
+message InviteMembersResponse {
+}
+
+message KickMembersRequest {
+  models.Initiator initiator = 1;
+  int64 group_id = 2;
+  repeated common.Member kicked = 3;
+}
+
+message KickMembersResponse {
+}
+
+message JoinRequest {
+  models.Initiator initiator = 1;
+  int64 group_id = 2;
+}
+
+message JoinResponse {
+  models.GroupWithSelfMemberInfo group_with_self_info = 1;
+}
+
+message LeaveRequest {
+  models.Initiator initiator = 1;
+  int64 group_id = 2;
+}
+
+message LeaveResponse {
+}
+
+message HasPermissionsRequest {
+  int64 group_id = 1;
+  common.Member member = 2;
+  bytes permissions_subset = 3; // requested permissions subset (encoded as GroupPermissions)
+}
+
+message HasPermissionsResponse {
+  google.protobuf.BytesValue permissions = 1; // permissions (encoded as GroupPermissions); null if not a member
+}
+
+message GetGroupMembersLoadMoreState {
+  common.Member next_member = 1;
+}
+
+message GetGroupMembersRequest {
+  models.Initiator initiator = 1;
+  int64 group_id = 2;
+  int32 limit = 3;
+  google.protobuf.BytesValue load_more_state = 5; // serialized GetGroupMembersLoadMoreState
+}
+
+message GetGroupMembersResponse{
+  repeated models.GroupMemberWithInfo members = 1;
+  google.protobuf.BytesValue load_more_state = 2; // serialized GetGroupMembersLoadMoreState
+}
+
+message GetGroupMemberInfoRequest {
+  models.Initiator initiator = 1;
+  int64 group_id = 2;
+  common.Member member = 3;
+}
+
+message GetGroupMemberInfoResponse {
+  models.GroupMemberInfo member = 1;
+}
+
+message GetGroupMemberInfoBatchRequest {
+  models.Initiator initiator = 1;
+  int64 group_id = 2;
+  repeated common.Member member = 3;
+}
+
+message GetGroupMemberInfoBatchResponse {
+  repeated models.GroupMemberWithInfo members = 1;
+}
+
+message TransferOwnershipRequest  {
+  models.Initiator initiator = 1;
+  int64 group_id = 2;
+  common.Member target = 3;
+}
+
+message TransferOwnershipResponse {
+
+}
+
+service Groups {
+  rpc Get(GetGroupRequest) returns (GetGroupResponse) {}
+  rpc Create(CreateGroupRequest) returns (CreateGroupResponse) {}
+  rpc InviteMembers(InviteMembersRequest) returns (InviteMembersResponse) {}
+  rpc KickMembers(KickMembersRequest) returns (KickMembersResponse) {}
+  rpc Join(JoinRequest) returns (JoinResponse) {}
+  rpc Leave(LeaveRequest) returns (LeaveResponse) {}
+  rpc HasPermissions(HasPermissionsRequest) returns (HasPermissionsResponse){}
+  rpc GetGroupMemberInfo(GetGroupMemberInfoRequest) returns (GetGroupMemberInfoResponse){}
+  rpc GetGroupMemberInfoBatch(GetGroupMemberInfoBatchRequest) returns (GetGroupMemberInfoBatchResponse){}
+  rpc GetGroupMembers(GetGroupMembersRequest) returns (GetGroupMembersResponse){}
+  rpc TransferOwnership(TransferOwnershipRequest) returns (TransferOwnershipResponse){}
+}

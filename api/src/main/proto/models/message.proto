@@ -14,6 +14,6 @@ message Message {
   int64 created_at = 3; //UNIX
   peers.Peer edited_by = 4;
   google.protobuf.Int64Value edited_at = 5;
-  messages.MessageContent content = 4;
+  messages.MessageContent content = 6;
   optional messages.MessageReference reference = 7;
 }

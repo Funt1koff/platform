@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.services;
+option go_package = "api_private/services";
+
+import "models/user_seq_update.proto";
+import "models/channel_seq_update.proto";
+import "presence.proto";
+
+message SendUpdatesRequest {
+  uint64 target_user_uid = 1;
+  repeated models.UserSeqUpdate user_seq_updates = 2;
+  repeated models.ChannelSeqUpdate channel_seq_updates = 3;
+  repeated com.bonfire.presence.PresenceUpdate presence_updates = 4;
+}
+
+message SendUpdatesResponse {
+
+}
+
+service UpdatesDelivery {
+  rpc SendUpdates(stream SendUpdatesRequest) returns (SendUpdatesResponse) {}
+}

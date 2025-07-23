@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.services;
+option go_package = "api_private/services";
+
+import "models/user_seq_update.proto";
+import "models/channel_seq_update.proto";
+import "models/initiator.proto";
+import "services/messaging.proto";
+
+message GetStateRequest {
+  models.Initiator initiator = 1;
+}
+
+message GetStateResponse {
+  int32 seq = 1; // user updates latest Seq Number
+  int32 date = 2;
+}
+
+message GetDifferenceRequest {
+  models.Initiator initiator = 1;
+  int32 seq = 2;
+  int32 seq_limit = 3;
+}
+
+message GetDifferenceResponse {
+  message Empty {}
+  message Default {
+    int32 seq = 1; // user updates latest Seq Number
+    repeated models.UserSeqUpdate updates = 3;
+    bool final = 4;
+  }
+  message TooLong {
+    int32 seq = 1; // user updates latest Seq Number
+  }
+
+  oneof value {
+    Empty empty = 1;
+    TooLong too_long = 2;
+    Default default = 3;
+  }
+}
+
+service UserSeqUpdates {
+  rpc GetState(GetStateRequest) returns (GetStateResponse) {}
+  rpc GetDifference(GetDifferenceRequest) returns (GetDifferenceResponse) {}
+}

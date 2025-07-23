@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+import "models/message.proto";
+import "models/conversation_peers.proto";
+import "message_content.proto";
+import "peers.proto";
+import "models/initiator.proto";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.events;
+option go_package = "api_private/events";
+
+// The request message containing the user's name.
+message ConversationEvent {
+  message NewMessage {
+    models.Message message = 1;
+    optional models.Message reply_to = 2;
+    int64 deduplication_id = 4;
+  }
+
+  message EditMessage {
+    models.Message message = 1;
+  }
+
+  message DeleteMessages {
+    repeated uint32 msg_ids = 1;
+    optional models.Message new_top_message = 2;
+    peers.Peer deleted_by = 3;
+  }
+
+  message ReadMessages {
+    int32 msg_id = 1;
+    repeated int64 affected_uids = 2;
+  }
+
+  models.ConversationPeer conversation_peer = 1;
+  int64 conversation_seq_number = 2;
+  optional int64 channel_seq_update_number = 3; // channel conversation messaging seq update number
+  models.Initiator initiator = 8;
+  oneof body {
+    NewMessage new_message = 4;
+    EditMessage edit_message = 5;
+    DeleteMessages delete_messages = 6;
+    ReadMessages read_messages = 7;
+  }
+
+}
+
+message ConversationEvents {
+  repeated ConversationEvent events = 1;
+}

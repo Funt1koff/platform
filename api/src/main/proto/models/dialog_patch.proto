@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.models;
+option go_package = "api_private/models";
+
+import "message_content.proto";
+import "google/protobuf/wrappers.proto";
+
+message DialogPatch {
+  google.protobuf.Int32Value update_top_message_id = 1;
+  google.protobuf.Int32Value update_read_inbox_max_message_id = 2;
+  google.protobuf.Int32Value update_read_outbox_max_message_id = 3;
+  google.protobuf.Int32Value update_unread_count = 4;
+  google.protobuf.Int32Value update_unread_mentions_count = 5;
+}

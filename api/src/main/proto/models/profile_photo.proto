@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.models;
+
+import "common.proto";
+
+message ProfilePhoto {
+  common.Photo small = 1;
+  common.Photo large = 2;
+  common.Photo full = 3;
+  string id = 4;
+  int64 edited_at = 5;
+}

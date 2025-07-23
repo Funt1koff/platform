@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.services;
+
+import "google/protobuf/timestamp.proto";
+import "models/initiator.proto";
+
+enum AvpoStatus {
+  AVPO_STATUS_UNKNOWN = 0;
+  AVPO_STATUS_NOT_REQUIRED = 1;
+  AVPO_STATUS_PENDING = 2;
+  AVPO_STATUS_PASSED = 3;
+  AVPO_STATUS_FAILED = 4;
+  AVPO_STATUS_ERROR = 5;
+}
+
+message File {
+  string id = 1;
+  string file_name = 2;
+  int32 file_size = 3;
+  string mime_type = 4;
+  google.protobuf.Timestamp uploaded_at = 5;
+  int64 access_hash = 6;
+  bytes check_sum = 7;
+  int32 dc_id = 8;
+  AvpoStatus avpo_status = 9;
+  bytes server_check_sum = 10;
+  int32 reference_count = 11;
+}

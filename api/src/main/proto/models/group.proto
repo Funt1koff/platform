@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.models;
+option go_package = "api_private/models";
+
+import "common.proto";
+import "google/protobuf/wrappers.proto";
+
+enum GroupPermission {
+  GROUP_PERMISSION_EMPTY = 0;
+  GROUP_PERMISSION_CAN_ADD_MEMBER = 1;
+  GROUP_PERMISSION_CAN_REMOVE_MEMBER = 2;
+  GROUP_PERMISSION_CAN_SEND_MESSAGE = 3;
+  GROUP_PERMISSION_CAN_DELETE_MESSAGE = 4;
+}
+
+message Group {
+  string title = 1;
+  google.protobuf.StringValue description = 2;
+  int64 created_at = 3;
+  int32 members_count = 4;
+  bytes base_permissions = 5; // additional permissions (encoded as GroupPermissions)
+}
+
+message GroupMembers {
+  repeated common.Member local_members = 1; // members from same DC as group
+  repeated common.Member deleted = 2;
+}
+
+message GroupMemberInfo {
+  bool isOwner = 1;
+  bool isAdmin = 2;
+  google.protobuf.Int64Value  invitedAt = 3;
+  common.Member invitedBy = 4;
+  google.protobuf.Int64Value joinedAt = 5;
+  google.protobuf.Int64Value kickedAt = 6;
+  common.Member kickedBy = 7;
+  google.protobuf.Int64Value leftAt = 8;
+
+  bytes added_permissions = 9; // additional permissions (encoded as GroupPermissions)
+  bytes removed_permissions = 10; //  removed permissions (encoded as GroupPermissions)
+}
+
+message GroupMemberWithInfo {
+  common.Member member = 1;
+  GroupMemberInfo info = 2;
+}
+
+message GroupWithSelfMemberInfo {
+  models.Group group = 1;
+  models.GroupMemberInfo self_member_info = 2;
+}
+
+message UpdateGroupChanged {
+  int64 group_id = 1;
+}
+
+message UpdateGroupMembersDiff {
+  int64 group_id = 1;
+  repeated models.GroupMemberWithInfo added_or_changed_members = 2;
+  repeated common.Member deleted_members = 3;
+}

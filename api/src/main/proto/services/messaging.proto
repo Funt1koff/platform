@@ -1,0 +1,117 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.services;
+option go_package = "api_private/services";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+import "models/user_seq_update.proto";
+import "models/conversation_peers.proto";
+import "models/channel_seq_update.proto";
+import "models/initiator.proto";
+import "models/message.proto";
+import "common.proto";
+import "message_content.proto";
+import "peers.proto";
+
+message SendMessageRequest {
+  message ReplyTo {
+    int32 message_id = 1; // Id of message for reply
+  }
+  models.Initiator initiator = 1;
+  int64 random_id = 2; // Unique client message ID required to prevent message resending
+  models.ConversationPeer conversation_peer = 3; // The destination where the message will be sent
+  peers.Peer sender_peer = 6;
+  messages.MessageContent content = 4; // Content of the message
+  ReplyTo reply_to = 5;
+}
+
+message SendMessageResponse {
+  int32 message_id = 1;
+}
+
+message ForwardMessageRequest {
+  message MessageToForward {
+    int64 deduplication_id = 1;
+    int32 from_id = 2;
+    bool hide_author = 3;
+  }
+
+  models.Initiator initiator = 1;
+  models.ConversationPeer from_conversation_peer = 2;
+  peers.Peer sender_peer = 5;
+  models.ConversationPeer conversation_peer = 3;
+  repeated MessageToForward messages = 4;
+}
+
+message ForwardMessageResponse {
+  repeated int32 message_ids = 1;
+}
+
+message ReadMessagesRequest {
+  models.Initiator initiator = 1;
+  models.ConversationPeer conversation_peer = 2;
+  peers.Peer reader_peer = 4;
+  int32 max_msg_id = 3;
+}
+
+message ReadMessagesResponse {
+}
+
+message EditMessageRequest {
+  models.Initiator initiator = 1;
+  models.ConversationPeer conversation_peer = 2;
+  peers.Peer editor_peer = 5;
+  int32 id = 3;
+  messages.MessageContent content = 4;
+}
+
+message DeleteMessagesRequest {
+  models.Initiator initiator = 1;
+  models.ConversationPeer conversation_peer = 2;
+  peers.Peer deleter_peer = 4;
+  repeated int32 ids = 3;
+}
+
+message GetHistoryRequest {
+  models.Initiator initiator = 1;
+  models.ConversationPeer conversation_peer = 2;
+  oneof direction {
+    int32 before_message_id = 3;
+    int32 after_message_id = 4;
+    int32 around_message_id = 5;
+  }
+  google.protobuf.Int32Value min_id = 6;
+  google.protobuf.Int32Value max_id = 7;
+  int32 limit = 8;
+}
+
+message GetHistoryResponse {
+  repeated models.Message messages = 1;
+  bool partial = 2;
+}
+
+message GetMessagesRequest {
+  models.Initiator initiator = 1;
+  models.ConversationPeer conversation_peer = 2;
+  repeated int32 ids = 3;
+}
+
+message GetMessagesResponse {
+  repeated models.Message messages = 1;
+}
+
+service MessagesService {
+  rpc SendMessage(SendMessageRequest) returns (SendMessageResponse) {}
+  rpc ForwardMessage(ForwardMessageRequest) returns (ForwardMessageResponse) {}
+  rpc ReadMessages(ReadMessagesRequest) returns (ReadMessagesResponse) {}
+  rpc EditMessage(EditMessageRequest) returns (google.protobuf.Empty) {}
+  rpc DeleteMessages(DeleteMessagesRequest) returns (google.protobuf.Empty) {}
+}
+
+service MessagesHistoryService {
+  rpc GetMessages(GetMessagesRequest) returns (GetMessagesResponse) {}
+  rpc GetHistory(GetHistoryRequest) returns (GetHistoryResponse) {}
+}

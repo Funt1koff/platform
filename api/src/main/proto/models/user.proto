@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.models;
+
+import "google/protobuf/wrappers.proto";
+import "models/profile_photo.proto";
+option go_package = "api_private/models";
+
+message User {
+
+  enum LifeCycleStatus {
+    ABSENT = 0;
+    INCOMPLETE_REGISTRATION = 1;
+    READY = 2;
+  }
+
+  uint64 uid = 1;
+  string name = 2;
+  string phone_number = 3;
+  google.protobuf.StringValue username = 4;
+  LifeCycleStatus life_cycle_status = 5;
+  int64 created_at = 6;
+  int64 modified_at = 7;
+  google.protobuf.Int64Value deleted_at = 8;
+  ProfilePhoto profile_photo = 9;
+
+}

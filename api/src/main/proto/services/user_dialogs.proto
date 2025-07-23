@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.services;
+option go_package = "api_private/services";
+
+import "models/message.proto";
+import "models/user_seq_update.proto";
+import "models/channel_seq_update.proto";
+import "models/initiator.proto";
+import "services/messaging.proto";
+import "peers.proto";
+
+message GetDialogsRequest {
+  models.Initiator initiator = 1;
+}
+
+message GetDialogsResponse {
+  message Dialog {
+    peers.Peer peer = 1;
+    bool pinned = 2;
+    uint32 top_message_id = 3;
+    models.Message top_message = 10;
+    uint32 read_inbox_max_message_id = 4; //
+    uint32 read_outbox_max_message_id = 5;
+    uint32 unread_count = 6;
+    uint32 unread_mentions_count = 7;
+    optional uint32 cseq = 8; // channel seq
+    bool unread_mark = 9;
+  }
+
+  repeated Dialog dialogs = 1;
+}
+
+message ReadDialogRequest {
+  models.Initiator.User initiator = 1;
+  peers.Peer peer = 2;
+  int32 max_msg_id = 3;
+}
+
+message ReadDialogResponse {
+}
+
+service UserDialogs {
+  rpc GetDialogs(GetDialogsRequest) returns (GetDialogsResponse) {}
+  rpc ReadDialog(ReadDialogRequest) returns (ReadDialogResponse) {}
+}

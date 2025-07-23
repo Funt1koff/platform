@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+package com.bonfire.internal.api.services;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "models/contact.proto";
+option go_package = "api_private/services";
+
+message InputContact {
+  string client_id = 1;
+  string phone_number = 2;
+  string name = 3;
+}
+
+message ImportedContact {
+  string client_id = 1;
+  google.protobuf.Int64Value user_id = 2;
+  string name = 3;
+}
+
+message PageableElement {
+  string phone_number = 1;
+}
+
+message ImportContactsRequest {
+  repeated InputContact input_contacts = 1;
+  int64 owner_id = 2;
+}
+
+message ImportContactsResponse {
+  repeated ImportedContact imported_contacts = 1;
+  repeated string retry_client_ids = 2;
+}
+
+message AddContactRequest {
+  int64 user_id = 1;
+  string name = 2;
+  int64 owner_id = 3;
+}
+
+message GetContactsRequest {
+  int64 owner_id = 1;
+}
+
+message GetContactsResponse {
+  repeated models.Contact contacts = 1;
+}
+
+message GetAddressBookRequest {
+  int32 limit = 1;
+  int64 owner_id = 2;
+  optional PageableElement from = 3;
+}
+
+message GetAddressBookResponse {
+  repeated models.AddressBookEntry entries = 1;
+  optional PageableElement next = 3;
+}
+
+message DeleteContactsRequest {
+  repeated int64 user_ids = 1;
+  int64 owner_id = 2;
+}
+
+service Contacts {
+  rpc ImportContacts(ImportContactsRequest) returns (ImportContactsResponse) {}
+  rpc AddContact(AddContactRequest) returns (google.protobuf.Empty) {}
+  rpc GetContacts(GetContactsRequest) returns (GetContactsResponse) {}
+  rpc GetAddressBook(GetAddressBookRequest) returns (GetAddressBookResponse) {}
+  rpc DeleteContacts(DeleteContactsRequest) returns (google.protobuf.Empty) {}
+}
