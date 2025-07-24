@@ -12,7 +12,7 @@ message ConversationPeer {
 
   message User2Bot {
     int64 user_id = 1;
-    int64 bot_ud = 2;
+    int64 bot_id = 2;
   }
 
   message Bot2Bot {
