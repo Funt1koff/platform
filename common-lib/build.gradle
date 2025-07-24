@@ -1,0 +1,13 @@
+plugins {
+    id 'java-library'
+    alias(libs.plugins.quarkus)
+    alias(libs.plugins.lombok)
+    alias(libs.plugins.jandex)
+}
+
+apply from: rootProject.file('buildSrc/lib.gradle')
+
+dependencies {
+    implementation 'com.googlecode.libphonenumber:libphonenumber:9.0.4'
+    implementation 'org.apache.commons:commons-lang3:3.17.0'
+}
