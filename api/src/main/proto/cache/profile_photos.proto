@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package com.bonfire.cache;
+
+option java_multiple_files = true;
+option java_package = "com.bonfire.cache";
+option java_outer_classname = "ProfilePhotosProto";
+
+import "models/profile_photo.proto";
+
+message ProfilePhotos {
+  repeated internal.api.models.ProfilePhoto profile_photo = 1;
+}

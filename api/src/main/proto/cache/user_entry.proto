@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package com.bonfire.cache;
+
+option java_multiple_files = true;
+option java_package = "com.bonfire.cache";
+option java_outer_classname = "UserEntryProto";
+option go_package = "api_private/cache";
+
+import "google/protobuf/wrappers.proto";
+import "models/profile_photo.proto";
+
+message UserEntry {
+  enum LifeCycleStatus {
+    INCOMPLETE_REGISTRATION = 0;
+    READY = 1;
+  }
+
+  string deduplication_id = 1;
+  string name = 2;
+  string phone_number = 3;
+  google.protobuf.StringValue username = 4;
+  LifeCycleStatus life_cycle_status = 5;
+  int64 created_at = 6;
+  int64 modified_at = 7;
+  google.protobuf.Int64Value deleted_at = 8;
+  internal.api.models.ProfilePhoto profilePhoto = 9;
+}
