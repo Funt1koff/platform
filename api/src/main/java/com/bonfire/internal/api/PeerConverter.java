@@ -1,5 +1,6 @@
 package com.bonfire.internal.api;
 
+import com.bonfire.ignite.node.internal.api.ConversationPeerHelpers;
 import com.bonfire.internal.api.models.ConversationPeer;
 import com.bonfire.internal.api.models.Initiator;
 import com.bonfire.peers.*;

@@ -7,3 +7,13 @@ option java_package = "com.bonfire.cache";
 option java_outer_classname = "BotEntryProto";
 
 import "google/protobuf/wrappers.proto";
+import "models/common.proto";
+
+message BotEntity {
+  string name = 1;
+  google.protobuf.StringValue shortName = 2;
+  int64 owner_id = 3;
+  int64 created_at = 4;
+  google.protobuf.Int64Value deleted_at = 5;
+  repeated com.bonfire.internal.api.models.UUID tokens = 6;
+}

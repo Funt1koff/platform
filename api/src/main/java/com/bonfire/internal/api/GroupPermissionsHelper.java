@@ -1,6 +1,7 @@
 package com.bonfire.internal.api;
 
-import com.bonfire.internal.api.flags.GroupPermissions;
+
+import com.bonfire.ignite.node.internal.api.flags.GroupPermissions;
 import com.bonfire.internal.api.models.GroupMemberInfo;
 import lombok.experimental.UtilityClass;
 

@@ -4,7 +4,6 @@ package com.bonfire.cache;
 
 option java_multiple_files = true;
 option java_package = "com.bonfire.cache";
-option java_outer_classname = "FileUploadEntry";
 
 message FileUploadEntry {
   string upload_key = 1;

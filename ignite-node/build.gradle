@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+    id 'application'
+    alias(libs.plugins.quarkus)
+    alias(libs.plugins.lombok)
+    alias(libs.plugins.jandex)
+}
+
+apply from: rootProject.file('buildSrc/lib.gradle')
+
+dependencies {
+    implementation libs.ignite.client
+    implementation libs.quarkus.smallrye.health
+    testImplementation libs.quarkus.junit
+    testImplementation libs.rest.assured
+    testImplementation libs.quarkus.junit.mockito
+}
