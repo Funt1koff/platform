@@ -1,0 +1,20 @@
+plugins {
+    id 'java-library'
+    alias(libs.plugins.quarkus)
+    alias(libs.plugins.lombok)
+    alias(libs.plugins.jandex)
+}
+
+apply from: rootProject.file('buildSrc/lib.gradle')
+
+dependencies {
+    implementation project(":api")
+    implementation project (":ignite-models")
+    implementation("io.quarkus:quarkus-arc")
+    implementation libs.grpc.protobuf
+    implementation libs.commons.lang3
+    implementation libs.ignite.client
+    testImplementation(platform('org.junit:junit-bom:5.12.0'))
+    testImplementation libs.bundles.test
+//    testRuntimeOnly('org.junit.platform:junit-platform-launcher')
+}

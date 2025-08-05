@@ -23,4 +23,6 @@ include 'api'
 include 'common-lib'
 include 'ignite-node'
 include 'ignite-models'
+include 'files'
+include 'ignite-client'
 

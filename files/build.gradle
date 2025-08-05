@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+    id 'application'
+    alias(libs.plugins.quarkus)
+    alias(libs.plugins.lombok)
+    alias(libs.plugins.jandex)
+}
+apply from: rootProject.file('buildSrc/service.gradle')
+
+dependencies {
+    implementation project(":api")
+    implementation project(":ignite-client")
+    implementation project(":ignite-models")
+    implementation libs.ignite.client
+    implementation libs.grpc.protobuf
+    implementation libs.aws.java.sdk.s3
+    implementation libs.cassandra.quarkus.client
+    implementation libs.quarkus.smallrye.jwt
+
+    annotationProcessor libs.cassandra.quarkus.mapper
+
+    testImplementation libs.tus.client
+    testImplementation libs.bundles.test
+    testImplementation libs.test.containers.cassandra
+    testImplementation "io.quarkus:quarkus-test-security-jwt"
+
+}
